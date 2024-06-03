@@ -1,1 +1,1 @@
-echo "jira_ticket_exists=test" >> $GITHUB_ENV
+echo "action_state=yellow" >> "$GITHUB_ENV"
