@@ -1,3 +1,3 @@
 #!/bin/sh
 
-echo "action_state=yellow"
+action_state="yellow"
