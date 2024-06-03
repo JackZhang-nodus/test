@@ -10,27 +10,30 @@ jobs:
   phpcs:
     runs-on: ubuntu-latest
  
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    strategy:
+      matrix:
+        php-version: [8.2,8.3]
 
-    - name: Test
-      env:
-        TEST_GITHUB_TOKEN: ${{ secrets.MAGENTO_PASSWORD }}
-        TEST_SECRET: ${{ secrets.MAGENTO_USERNAME }}
-      run: |
-        echo "test"
-        echo ${{ secrets.MAGENTO_USERNAME }}
-        
-    - name: Test plugin installation
-      run: |
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v1
+
+      - name: Test plugin installation
+        run: |
           echo "{\"http-basic\":{\"repo.magento.com\":{\"username\":\"${MAGENTO_USERNAME}\",\"password\":\"${MAGENTO_PASSWORD}\"}}}" > auth.json
           composer install --prefer-dist
-      env:
+        env:
           CI: true
           MAGENTO_USERNAME: ${{ secrets.MAGENTO_USERNAME }}
           MAGENTO_PASSWORD: ${{ secrets.MAGENTO_PASSWORD }}
 
-    - name: Code Sniffer
-      run: vendor/bin/phpcs . --standard=PSR2 --extensions=php,phtml --error-severity=6 --severity=10
+      - name: Code Sniffer
+        run: vendor/bin/phpcs .
 
