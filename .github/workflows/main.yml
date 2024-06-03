@@ -1,0 +1,36 @@
+name: PHP CodeSniffer
+ 
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+ 
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Test
+      env:
+        TEST_GITHUB_TOKEN: ${{ secrets.MAGENTO_PASSWORD }}
+        TEST_SECRET: ${{ secrets.MAGENTO_USERNAME }}
+      run: |
+        echo "test"
+        echo ${{ secrets.MAGENTO_USERNAME }}
+        
+    - name: Test plugin installation
+      run: |
+          echo "{\"http-basic\":{\"repo.magento.com\":{\"username\":\"${MAGENTO_USERNAME}\",\"password\":\"${MAGENTO_PASSWORD}\"}}}" > auth.json
+          composer install --prefer-dist
+      env:
+          CI: true
+          MAGENTO_USERNAME: ${{ secrets.MAGENTO_USERNAME }}
+          MAGENTO_PASSWORD: ${{ secrets.MAGENTO_PASSWORD }}
+
+    - name: Code Sniffer
+      run: vendor/bin/phpcs . --standard=PSR2 --extensions=php,phtml --error-severity=6 --severity=10
+
