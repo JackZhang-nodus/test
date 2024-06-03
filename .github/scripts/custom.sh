@@ -1,1 +1,1 @@
-echo "action_state=yellow" >> "$GITHUB_ENV"
+echo "action_state=yellow" >> $GITHUB_ENV
