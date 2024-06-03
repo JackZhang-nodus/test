@@ -22,7 +22,7 @@ jobs:
         run: echo "My Github repo is called ${{ github.repository }}"
 
       - name: Read an env variable
-        run: echo "My APP_ID value is ${{ env.APP_ID }} (also accessible as $MY_APP_ID)"
+        run: echo "My APP_ID value is ${{ env.MY_APP_ID }} (also accessible as $MY_APP_ID)"
 
       - uses: actions/checkout@v2
       - name: Read the env from an external script
