@@ -29,8 +29,11 @@ jobs:
         run: |
           chmod +x .github/scripts/custom.sh
           .github/scripts/custom.sh
-          echo "$action_state"
         shell: bash
+
+      - name: Use the value
+        run: |
+          printf '%s\n' "$action_state" # This will output 'yellow'
 
   top-secret-production:
     runs-on: ubuntu-latest
