@@ -29,6 +29,7 @@ jobs:
         run: |
           chmod +x .github/scripts/custom.sh
           .github/scripts/custom.sh
+          echo "$action_state"
         shell: bash
 
   top-secret-production:
