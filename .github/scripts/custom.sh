@@ -1,3 +1,3 @@
 #!/bin/sh
 
-action_state="yellow"
+echo "action_state=yellow" >> $GITHUB_ENV
